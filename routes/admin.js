@@ -75,7 +75,7 @@ const pollUpload = multer({
   fileFilter: (req, file, cb) => cb(null, !!EXT[file.mimetype]),
 }).array('opt_image', 12);
 
-const handleUpload = (req, res, next) => upload(req, res, (err) => {
+const handleUpload = (req, res, next) => upload.single('image')(req, res, (err) => {
   if (err) req.uploadError = err.code === 'LIMIT_FILE_SIZE' ? 'Image trop lourde (max 5 Mo).' : "Erreur lors de l'envoi de l'image.";
   next();
 });
