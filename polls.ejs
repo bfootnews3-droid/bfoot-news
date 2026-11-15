@@ -1,9 +1,23 @@
-<%- include('partials/header', { active: 'polls', meta: { title: t('nav_polls') } }) %>
-<main class="container">
-  <div class="sec-head page-head"><h1 class="sec-title"><%= t('nav_polls') %></h1></div>
-  <% if (!polls.length) { %><p class="empty"><%= t('no_content') %></p><% } else { %>
-  <div class="grid polls-grid"><% polls.forEach(p => { %><%- include('partials/poll', { p }) %><% }) %></div>
-  <%- include('partials/pager') %>
-  <% } %>
-</main>
-<%- include('partials/footer') %>
+<%- include('_head') %>
+<div class="adm-head"><h1 class="adm-title">Sondages</h1><a class="btn" href="/admin/polls/new">+ Nouveau sondage</a></div>
+<div class="table-wrap"><table>
+  <thead><tr><th>Question</th><th>Options</th><th>Votes</th><th>Statut</th><th>Actions</th></tr></thead>
+  <tbody>
+  <% items.forEach(p => { %>
+  <tr>
+    <td><strong><%= p.question_fr || p.question_ar %></strong><% if (p.question_fr && p.question_ar) { %><br><small dir="rtl"><%= p.question_ar %></small><% } %></td>
+    <td><%= p.options %></td><td><%= p.votes %></td>
+    <td><span class="badge <%= p.published ? 'ok' : '' %>"><%= p.published ? 'Publié' : 'Masqué' %></span>
+        <% if (p.closed) { %><span class="badge red">Clôturé</span><% } %></td>
+    <td class="acts">
+      <a class="btn ghost sm" href="/admin/polls/<%= p.id %>/edit">Modifier / Résultats</a>
+      <form method="post" action="/admin/polls/<%= p.id %>/toggle"><button class="btn ghost sm"><%= p.published ? 'Dépublier' : 'Publier' %></button></form>
+      <form method="post" action="/admin/polls/<%= p.id %>/close"><button class="btn ghost sm"><%= p.closed ? 'Rouvrir' : 'Clôturer' %></button></form>
+      <form method="post" action="/admin/polls/<%= p.id %>/reset" data-confirm="Remettre tous les votes à zéro ?"><button class="btn ghost sm">Reset votes</button></form>
+      <form method="post" action="/admin/polls/<%= p.id %>/delete" data-confirm="Supprimer ce sondage et tous ses votes ?"><button class="btn danger sm">Supprimer</button></form>
+    </td>
+  </tr>
+  <% }) %>
+  </tbody>
+</table></div>
+<%- include('_foot') %>
