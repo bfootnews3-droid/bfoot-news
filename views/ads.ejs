@@ -1,0 +1,18 @@
+<%- include('_head') %>
+<div class="adm-head"><h1 class="adm-title">Publicités</h1><a class="btn" href="/admin/ads/new">+ Nouvelle publicité</a></div>
+<div class="table-wrap"><table>
+  <thead><tr><th>Publicité</th><th>Lien</th><th>Position</th><th>Statut</th><th>Actions</th></tr></thead>
+  <tbody>
+  <% items.forEach(ad => { %>
+  <tr>
+    <td><% if (ad.image) { %><img src="/uploads/<%= ad.image %>" alt="" style="width:100px;height:50px;object-fit:cover;border-radius:8px;vertical-align:middle;margin-right:8px"><% } %><strong><%= ad.title || 'Sans titre' %></strong></td>
+    <td><% if (ad.link) { %><a href="<%= ad.link %>" target="_blank" rel="noopener"><%= ad.link %></a><% } else { %>—<% } %></td>
+    <td><%= ad.position %></td>
+    <td><span class="badge <%= ad.published ? 'ok' : '' %>"><%= ad.published ? 'Publié' : 'Masqué' %></span></td>
+    <td class="acts"><form method="post" action="/admin/ads/<%= ad.id %>/toggle"><button class="btn ghost sm"><%= ad.published ? 'Masquer' : 'Publier' %></button></form><form method="post" action="/admin/ads/<%= ad.id %>/delete" data-confirm="Supprimer cette publicité ?"><button class="btn danger sm">Supprimer</button></form></td>
+  </tr>
+  <% }) %>
+  </tbody>
+</table></div>
+<% if (!items.length) { %><p class="empty">Aucune publicité. Cliquez sur « Nouvelle publicité » pour en ajouter une.</p><% } %>
+<%- include('_foot') %>

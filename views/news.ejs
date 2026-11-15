@@ -1,0 +1,20 @@
+<%- include('partials/header', { active: 'news', meta: { title: cat ? catLabel(cat) : t('nav_news') } }) %>
+<main class="container">
+  <div class="sec-head page-head"><h1 class="sec-title"><%= t('nav_news') %></h1></div>
+  <form class="filters" action="/<%= lang %>/news" method="get">
+    <% if (cat) { %><input type="hidden" name="cat" value="<%= cat %>"><% } %>
+    <input type="search" name="q" value="<%= q %>" placeholder="<%= t('search') %>" maxlength="80">
+    <button class="btn" type="submit">⌕</button>
+  </form>
+  <div class="chips">
+    <a class="<%= !cat ? 'on' : '' %>" href="<%= qsCat('') %>"><%= t('all') %></a>
+    <% CATS.forEach(c => { %><a class="<%= cat === c ? 'on' : '' %>" href="<%= qsCat(c) %>"><%= catLabel(c) %></a><% }) %>
+  </div>
+  <% if (!items.length) { %>
+    <p class="empty"><%= t('no_results') %></p>
+  <% } else { %>
+    <div class="grid"><% items.forEach(a => { %><%- include('partials/card', { a }) %><% }) %></div>
+    <%- include('partials/pager') %>
+  <% } %>
+</main>
+<%- include('partials/footer') %>

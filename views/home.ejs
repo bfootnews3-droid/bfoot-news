@@ -1,1 +1,68 @@
+<%- include('partials/header', { active: 'home' }) %>
+<% const feat = breaking.length ? breaking : latest; const hero = feat[0]; const side = feat.slice(1, 5); %>
 
+<% if (breaking.length) { %>
+<div class="ticker">
+  <div class="container ticker-in">
+    <span class="ticker-label"><%= t('breaking') %></span>
+    <div class="ticker-track"><div class="ticker-items">
+      <% breaking.forEach(a => { %><a href="/<%= lang %>/news/<%= a.slug %>">● <%= L(a, 'title') %></a><% }) %>
+    </div></div>
+  </div>
+</div>
+<% } %>
+
+<main class="container">
+  <% if (!hero) { %>
+    <p class="empty"><%= t('no_content') %></p>
+  <% } else { %>
+  <section class="hero">
+    <a class="hero-main" href="/<%= lang %>/news/<%= hero.slug %>">
+      <img src="<%= hero.image ? '/uploads/' + hero.image : '/static/img/logo.png' %>" class="<%= hero.image ? '' : 'ph' %>" alt="<%= L(hero, 'title') %>" fetchpriority="high">
+      <div class="hero-body">
+        <span class="tag"><%= breaking.length ? t('breaking') : catLabel(hero.category) %></span>
+        <h1><%= L(hero, 'title') %></h1>
+        <p><%= excerptOf(hero) %></p>
+        <time><%= fmtDate(hero.created_at) %></time>
+      </div>
+    </a>
+    <div class="hero-list">
+      <% side.forEach(a => { %>
+      <a class="mini" href="/<%= lang %>/news/<%= a.slug %>">
+        <img src="<%= a.image ? '/uploads/' + a.image : '/static/img/logo.png' %>" class="<%= a.image ? '' : 'ph' %>" alt="" loading="lazy">
+        <div><span class="tag sm"><%= catLabel(a.category) %></span><h4><%= L(a, 'title') %></h4><time><%= fmtDate(a.created_at) %></time></div>
+      </a>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (ads && ads.length) { %>
+  <section class="section ads-section">
+    <div class="sec-head"><h2 class="sec-title">Publicités</h2></div>
+    <div class="ads-grid">
+      <% ads.forEach(ad => { %>
+        <% const adBody = ad.image ? '<img src="/uploads/' + ad.image + '" alt="' + (ad.title || 'Publicité') + '" loading="lazy">' : '<strong>' + (ad.title || 'Publicité') + '</strong>'; %>
+        <% if (ad.link) { %><a class="ad-card" href="<%= ad.link %>" target="_blank" rel="noopener sponsored"><%- adBody %></a><% } else { %><div class="ad-card"><%- adBody %></div><% } %>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <section class="section">
+    <div class="sec-head"><h2 class="sec-title"><%= t('latest_news') %></h2><a class="more" href="/<%= lang %>/news"><%= t('view_all') %> →</a></div>
+    <div class="grid">
+      <% latest.forEach(a => { %><%- include('partials/card', { a }) %><% }) %>
+    </div>
+  </section>
+
+  <% if (polls.length) { %>
+  <section class="section">
+    <div class="sec-head"><h2 class="sec-title"><%= t('latest_polls') %></h2><a class="more" href="/<%= lang %>/polls"><%= t('view_all') %> →</a></div>
+    <div class="grid polls-grid">
+      <% polls.forEach(p => { %><%- include('partials/poll', { p }) %><% }) %>
+    </div>
+  </section>
+  <% } %>
+</main>
+<%- include('partials/footer') %>
