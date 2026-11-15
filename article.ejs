@@ -1,0 +1,35 @@
+<%- include('partials/header', { active: 'news' }) %>
+<% const url = SITE_URL + '/' + lang + '/news/' + a.slug; const enc = encodeURIComponent(url); const ttl = encodeURIComponent(L(a, 'title'));
+   const body = L(a, 'content').split(/\n\s*\n/).map(s => s.trim()).filter(Boolean); %>
+<script type="application/ld+json"><%- JSON.stringify({
+  '@context': 'https://schema.org', '@type': 'NewsArticle',
+  headline: L(a, 'title'), description: excerptOf(a).slice(0, 160),
+  image: a.image ? SITE_URL + '/uploads/' + a.image : SITE_URL + '/static/img/logo.png',
+  datePublished: new Date(a.created_at.replace(' ', 'T') + 'Z').toISOString(),
+  dateModified: new Date(a.updated_at.replace(' ', 'T') + 'Z').toISOString(),
+  inLanguage: lang, mainEntityOfPage: url,
+  publisher: { '@type': 'Organization', name: 'BFOOT NEWS', logo: { '@type': 'ImageObject', url: SITE_URL + '/static/img/logo.png' } }
+}).replace(/</g, '\\u003c') %></script>
+
+<main class="container">
+  <article class="article">
+    <a class="tag" href="/<%= lang %>/news?cat=<%= a.category %>"><%= catLabel(a.category) %></a>
+    <h1><%= L(a, 'title') %></h1>
+    <div class="meta big"><time datetime="<%= a.created_at %>"><%= fmtDate(a.created_at) %></time><span>👁 <%= a.views %> <%= t('views') %></span></div>
+    <% if (a.image) { %><img class="cover" src="/uploads/<%= a.image %>" alt="<%= L(a, 'title') %>" fetchpriority="high"><% } %>
+    <div class="prose"><% body.forEach(p => { %><p><%- p.split('\n').map(l => l.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))).join('<br>') %></p><% }) %></div>
+    <div class="share">
+      <span><%= t('share') %> :</span>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=<%= enc %>" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://twitter.com/intent/tweet?url=<%= enc %>&text=<%= ttl %>" target="_blank" rel="noopener">X</a>
+      <a href="https://wa.me/?text=<%= ttl %>%20<%= enc %>" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </article>
+  <% if (related.length) { %>
+  <section class="section">
+    <div class="sec-head"><h2 class="sec-title"><%= t('related') %></h2></div>
+    <div class="grid"><% related.forEach(x => { %><%- include('partials/card', { a: x }) %><% }) %></div>
+  </section>
+  <% } %>
+</main>
+<%- include('partials/footer') %>

@@ -1,0 +1,52 @@
+<%- include('_head') %>
+<h1 class="adm-title"><%= isNew ? 'Nouveau sondage' : 'Modifier le sondage' %></h1>
+<% if (error) { %><div class="alert"><%= error %></div><% } %>
+
+<% if (!isNew && v.options && v.options.some(o => o.votes !== undefined)) { %>
+<section class="adm-box">
+  <h2 class="adm-sub">Résultats actuels — <%= v.total %> votes</h2>
+  <% v.options.forEach(o => { %>
+    <div class="res-row"><span><%= o.label_fr || o.label_ar %></span>
+      <div class="res-bar"><i style="width:<%= o.percent %>%"></i></div><b><%= o.votes %> (<%= o.percent %>%)</b></div>
+  <% }) %>
+  <form method="post" action="/admin/polls/<%= id %>/reset" data-confirm="Remettre tous les votes à zéro ?"><button class="btn danger sm">Remettre les votes à zéro</button></form>
+</section>
+<% } %>
+
+<form method="post" action="<%= isNew ? '/admin/polls' : '/admin/polls/' + id %>" class="adm-form" enctype="multipart/form-data">
+  <div class="two-col">
+    <label class="field"><span>🇫🇷 Question</span><input name="question_fr" maxlength="250" value="<%= v.question_fr || '' %>"></label>
+    <label class="field" dir="rtl"><span>🇸🇦 السؤال</span><input name="question_ar" maxlength="250" value="<%= v.question_ar || '' %>"></label>
+  </div>
+  <h3 class="adm-sub">Options (2 à 12) — supprimer une option supprime ses votes</h3>
+  <div id="optList">
+    <% v.options.forEach(o => { %>
+    <div class="opt-row">
+      <input type="hidden" name="opt_id" value="<%= o.id || '' %>">
+      <input type="hidden" name="opt_image_current" value="<%= o.image || '' %>">
+      <input name="opt_fr" placeholder="Option (FR)" maxlength="150" value="<%= o.label_fr || '' %>">
+      <input name="opt_ar" placeholder="الخيار (AR)" maxlength="150" dir="rtl" value="<%= o.label_ar || '' %>">
+      <label class="opt-photo">Photo <input type="file" name="opt_image" accept="image/jpeg,image/png,image/webp,image/gif"><% if (o.image) { %><img src="/uploads/<%= o.image %>" alt="" class="opt-thumb"><% } %></label>
+      <button type="button" class="btn danger sm rm-opt" aria-label="Supprimer">✕</button>
+    </div>
+    <% }) %>
+  </div>
+  <button type="button" class="btn ghost sm" id="addOpt">+ Ajouter une option</button>
+  <div class="row3" style="margin-top:18px">
+    <label class="check"><input type="checkbox" name="published" <%= v.published ? 'checked' : '' %>> Publié</label>
+    <label class="check"><input type="checkbox" name="closed" <%= v.closed ? 'checked' : '' %>> Clôturé (votes fermés)</label>
+  </div>
+  <div class="adm-actions"><button class="btn" type="submit">Enregistrer</button><a class="btn ghost" href="/admin/polls">Annuler</a></div>
+</form>
+
+<template id="optTpl">
+  <div class="opt-row">
+    <input type="hidden" name="opt_id" value="">
+    <input type="hidden" name="opt_image_current" value="">
+    <input name="opt_fr" placeholder="Option (FR)" maxlength="150">
+    <input name="opt_ar" placeholder="الخيار (AR)" maxlength="150" dir="rtl">
+    <label class="opt-photo">Photo <input type="file" name="opt_image" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+    <button type="button" class="btn danger sm rm-opt" aria-label="Supprimer">✕</button>
+  </div>
+</template>
+<%- include('_foot') %>

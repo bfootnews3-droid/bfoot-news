@@ -1,0 +1,26 @@
+<% const locked = !!p.closed || !!p.voted; %>
+<article class="poll <%= locked ? 'is-locked' : '' %> <%= p.closed ? 'is-closed' : '' %>"
+  data-poll-id="<%= p.id %>"
+  data-msg-voted="<%= t('you_voted') %>" data-msg-closed="<%= t('poll_closed') %>"
+  data-err-voted="<%= t('err_voted') %>" data-err-closed="<%= t('err_closed') %>" data-err-generic="<%= t('err_generic') %>">
+  <header>
+    <span class="live"><i></i><%= t('live') %></span>
+    <h3><a href="/<%= lang %>/polls/<%= p.id %>"><%= L(p, 'question') %></a></h3>
+  </header>
+  <ul class="opts">
+    <% p.options.forEach(o => { %>
+    <li>
+      <button type="button" class="opt <%= p.voted === o.id ? 'mine' : '' %>" data-option-id="<%= o.id %>" <%= locked ? 'disabled' : '' %>>
+        <% if (o.image) { %><img class="opt-image" src="/uploads/<%= o.image %>" alt="<%= L(o, 'label') %>" loading="lazy"><% } %>
+        <span class="bar"><i style="width:<%= o.percent %>%"></i></span>
+        <span class="lbl"><%= L(o, 'label') %></span>
+        <span class="pct" dir="ltr"><%= o.percent %>%</span>
+      </button>
+    </li>
+    <% }) %>
+  </ul>
+  <footer class="poll-foot">
+    <span><b class="total"><%= new Intl.NumberFormat(lang === 'ar' ? 'ar-u-nu-latn' : 'fr-FR').format(p.total) %></b> <%= t('votes') %></span>
+    <span class="status"><%= p.closed ? t('poll_closed') : (p.voted ? t('you_voted') : t('vote_hint')) %></span>
+  </footer>
+</article>

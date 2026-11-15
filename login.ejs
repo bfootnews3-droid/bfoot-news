@@ -1,0 +1,12 @@
+<%- include('_head') %>
+<div class="login-box">
+  <img src="/static/img/logo.png" alt="BFOOT NEWS" width="120" height="120">
+  <h1>Administration</h1>
+  <% if (error) { %><div class="alert"><%= error %></div><% } %>
+  <form method="post" action="/admin/login" autocomplete="on">
+    <label class="field"><span>Adresse e-mail</span><input type="email" name="email" required autocomplete="username" placeholder="votre@email.com"></label>
+    <label class="field"><span>Mot de passe</span><input type="password" name="password" required autocomplete="current-password"></label>
+    <button class="btn block" type="submit">Se connecter</button>
+  </form>
+</div>
+<%- include('_foot') %>

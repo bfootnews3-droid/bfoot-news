@@ -1,0 +1,11 @@
+<article class="card">
+  <a class="card-img" href="/<%= lang %>/news/<%= a.slug %>" tabindex="-1" aria-hidden="true">
+    <img src="<%= a.image ? '/uploads/' + a.image : '/static/img/logo.png' %>" class="<%= a.image ? '' : 'ph' %>"
+         alt="<%= L(a, 'title') %>" loading="lazy" width="640" height="360">
+  </a>
+  <div class="card-body">
+    <div class="meta"><span class="tag"><%= catLabel(a.category) %></span><time><%= fmtDate(a.created_at) %></time></div>
+    <h3><a href="/<%= lang %>/news/<%= a.slug %>"><%= L(a, 'title') %></a></h3>
+    <p><%= excerptOf(a) %></p>
+  </div>
+</article>

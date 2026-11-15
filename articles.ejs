@@ -1,0 +1,24 @@
+<%- include('_head') %>
+<div class="adm-head"><h1 class="adm-title">Articles</h1><a class="btn" href="/admin/articles/new">+ Nouvel article</a></div>
+<div class="table-wrap"><table>
+  <thead><tr><th></th><th>Titre</th><th>Catégorie</th><th>Statut</th><th>Date</th><th>Vues</th><th>Actions</th></tr></thead>
+  <tbody>
+  <% items.forEach(a => { %>
+  <tr>
+    <td><% if (a.image) { %><img class="thumb" src="/uploads/<%= a.image %>" alt=""><% } %></td>
+    <td><strong><%= a.title_fr || a.title_ar %></strong>
+        <% if (a.title_fr && a.title_ar) { %><br><small dir="rtl"><%= a.title_ar %></small><% } %>
+        <% if (a.is_breaking) { %><span class="badge red">URGENT</span><% } %></td>
+    <td><%= catLabel(a.category) %></td>
+    <td><span class="badge <%= a.published ? 'ok' : '' %>"><%= a.published ? 'Publié' : 'Brouillon' %></span></td>
+    <td><%= fmtDate(a.created_at) %></td><td><%= a.views %></td>
+    <td class="acts">
+      <a class="btn ghost sm" href="/admin/articles/<%= a.id %>/edit">Modifier</a>
+      <form method="post" action="/admin/articles/<%= a.id %>/toggle"><button class="btn ghost sm"><%= a.published ? 'Dépublier' : 'Publier' %></button></form>
+      <form method="post" action="/admin/articles/<%= a.id %>/delete" data-confirm="Supprimer définitivement cet article ?"><button class="btn danger sm">Supprimer</button></form>
+    </td>
+  </tr>
+  <% }) %>
+  </tbody>
+</table></div>
+<%- include('_foot') %>
