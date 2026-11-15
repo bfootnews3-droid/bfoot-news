@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — BFOOT NEWS</title>
+<link rel="icon" href="/static/img/logo.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="admin lang-fr">
+<% if (typeof admin !== 'undefined') { %>
+<header class="adm-bar">
+  <div class="container adm-in">
+    <a class="brand" href="/admin"><img src="/static/img/logo.png" alt="" width="40" height="40"><span class="brand-text"><span><b>BFOOT</b> ADMIN</span></span></a>
+    <nav class="main-nav">
+      <a href="/admin" class="<%= page === 'dashboard' ? 'on' : '' %>">Tableau de bord</a>
+      <a href="/admin/articles" class="<%= page === 'articles' ? 'on' : '' %>">Articles</a>
+      <a href="/admin/polls" class="<%= page === 'polls' ? 'on' : '' %>">Votes</a>
+      <a href="/admin/ads" class="<%= page === 'ads' ? 'on' : '' %>">Publicités</a>
+      <a href="/fr" target="_blank" rel="noopener">Voir le site ↗</a>
+    </nav>
+    <form method="post" action="/admin/logout"><button class="btn ghost sm" type="submit">Déconnexion (<%= admin.u %>)</button></form>
+  </div>
+</header>
+<% } %>
+<main class="container adm-main">

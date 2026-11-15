@@ -1,0 +1,33 @@
+<%- include('_head') %>
+<h1 class="adm-title"><%= isNew ? 'Nouvel article' : "Modifier l'article" %></h1>
+<% if (error) { %><div class="alert"><%= error %></div><% } %>
+<form method="post" enctype="multipart/form-data" action="<%= isNew ? '/admin/articles' : '/admin/articles/' + id %>" class="adm-form">
+  <div class="row3">
+    <label class="field"><span>Catégorie</span>
+      <select name="category"><% CATS.forEach(c => { %><option value="<%= c %>" <%= v.category === c ? 'selected' : '' %>><%= catLabel(c) %></option><% }) %></select>
+    </label>
+    <label class="check"><input type="checkbox" name="is_breaking" <%= v.is_breaking ? 'checked' : '' %>> Marquer comme URGENT (Breaking News)</label>
+    <label class="check"><input type="checkbox" name="published" <%= v.published ? 'checked' : '' %>> Publié</label>
+  </div>
+
+  <div class="field"><span>Image (JPG, PNG, WebP, GIF — max 5 Mo)</span>
+    <input type="file" name="image" id="imageInput" accept="image/jpeg,image/png,image/webp,image/gif">
+    <img id="imgPrev" class="preview" <%- v.image ? 'src="/uploads/' + v.image + '"' : 'hidden' %> alt="">
+    <% if (v.image) { %><label class="check"><input type="checkbox" name="remove_image"> Supprimer l'image actuelle</label><% } %>
+  </div>
+
+  <div class="two-col">
+    <fieldset><legend>🇫🇷 Français</legend>
+      <label class="field"><span>Titre</span><input name="title_fr" maxlength="200" value="<%= v.title_fr || '' %>"></label>
+      <label class="field"><span>Résumé</span><textarea name="excerpt_fr" rows="2" maxlength="400"><%= v.excerpt_fr || '' %></textarea></label>
+      <label class="field"><span>Contenu (séparez les paragraphes par une ligne vide)</span><textarea name="content_fr" rows="12"><%= v.content_fr || '' %></textarea></label>
+    </fieldset>
+    <fieldset dir="rtl"><legend>🇸🇦 العربية</legend>
+      <label class="field"><span>العنوان</span><input name="title_ar" maxlength="200" value="<%= v.title_ar || '' %>"></label>
+      <label class="field"><span>الملخص</span><textarea name="excerpt_ar" rows="2" maxlength="400"><%= v.excerpt_ar || '' %></textarea></label>
+      <label class="field"><span>المحتوى (افصل الفقرات بسطر فارغ)</span><textarea name="content_ar" rows="12"><%= v.content_ar || '' %></textarea></label>
+    </fieldset>
+  </div>
+  <div class="adm-actions"><button class="btn" type="submit">Enregistrer</button><a class="btn ghost" href="/admin/articles">Annuler</a></div>
+</form>
+<%- include('_foot') %>

@@ -1,0 +1,30 @@
+<%- include('_head') %>
+<h1 class="adm-title">Tableau de bord</h1>
+<div class="stats">
+  <div><b><%= stats.articles %></b><span>Articles</span></div>
+  <div><b><%= stats.published %></b><span>Publiés</span></div>
+  <div><b><%= stats.polls %></b><span>Sondages</span></div>
+  <div><b><%= stats.votes %></b><span>Votes</span></div>
+  <div><b><%= stats.views %></b><span>Vues</span></div>
+</div>
+<div class="adm-actions">
+  <a class="btn" href="/admin/articles/new">+ Nouvel article</a>
+  <a class="btn ghost" href="/admin/polls/new">+ Nouveau sondage</a>
+</div>
+<h2 class="adm-sub">Derniers articles</h2>
+<div class="table-wrap"><table>
+  <% articles.forEach(a => { %>
+  <tr><td><%= a.title_fr || a.title_ar %></td><td><%= catLabel(a.category) %></td>
+      <td><span class="badge <%= a.published ? 'ok' : '' %>"><%= a.published ? 'Publié' : 'Brouillon' %></span></td>
+      <td><a class="btn ghost sm" href="/admin/articles/<%= a.id %>/edit">Modifier</a></td></tr>
+  <% }) %>
+</table></div>
+<h2 class="adm-sub">Derniers sondages</h2>
+<div class="table-wrap"><table>
+  <% polls.forEach(p => { %>
+  <tr><td><%= p.question_fr || p.question_ar %></td><td><%= p.votes %> votes</td>
+      <td><span class="badge <%= p.published ? 'ok' : '' %>"><%= p.published ? 'Publié' : 'Masqué' %></span></td>
+      <td><a class="btn ghost sm" href="/admin/polls/<%= p.id %>/edit">Gérer</a></td></tr>
+  <% }) %>
+</table></div>
+<%- include('_foot') %>

@@ -1,0 +1,12 @@
+<%- include('_head') %>
+<div class="adm-head"><h1 class="adm-title">Nouvelle publicité</h1><a class="btn ghost" href="/admin/ads">Retour</a></div>
+<% if (error) { %><div class="alert"><%= error %></div><% } %>
+<form class="form adm-form" method="post" action="/admin/ads" enctype="multipart/form-data">
+  <label>Titre (facultatif)<input name="title" maxlength="160" value="<%= v.title || '' %>" placeholder="Ex. Offre partenaire"></label>
+  <label>Image de la publicité<input type="file" name="image" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+  <label>Lien de destination<input name="link" type="url" maxlength="500" value="<%= v.link || '' %>" placeholder="https://exemple.com"></label>
+  <label>Position d’affichage<input name="position" type="number" min="0" value="<%= v.position || 0 %>"></label>
+  <label class="check"><input type="checkbox" name="published" value="1" <%= v.published ? 'checked' : '' %>> Publier immédiatement</label>
+  <button class="btn" type="submit">Enregistrer la publicité</button>
+</form>
+<%- include('_foot') %>
