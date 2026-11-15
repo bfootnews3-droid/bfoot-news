@@ -1,1 +1,54 @@
-
+<!DOCTYPE html>
+<html lang="<%= lang %>" dir="<%= dir %>">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<% const pageTitle = meta.title ? meta.title + ' | BFOOT NEWS' : 'BFOOT NEWS — ' + t('slogan');
+   const pageDesc = meta.description || t('meta_desc');
+   const pageImg = meta.image || (SITE_URL + '/static/img/logo.png'); %>
+<title><%= pageTitle %></title>
+<meta name="description" content="<%= pageDesc %>">
+<meta name="theme-color" content="#05070d">
+<link rel="canonical" href="<%= SITE_URL %>/<%= lang %><%= rest %>">
+<link rel="alternate" hreflang="ar" href="<%= SITE_URL %>/ar<%= rest %>">
+<link rel="alternate" hreflang="fr" href="<%= SITE_URL %>/fr<%= rest %>">
+<link rel="alternate" hreflang="x-default" href="<%= SITE_URL %>/fr<%= rest %>">
+<meta property="og:site_name" content="BFOOT NEWS">
+<meta property="og:type" content="<%= meta.type || 'website' %>">
+<meta property="og:title" content="<%= pageTitle %>">
+<meta property="og:description" content="<%= pageDesc %>">
+<meta property="og:image" content="<%= pageImg %>">
+<meta property="og:locale" content="<%= lang === 'ar' ? 'ar_AR' : 'fr_FR' %>">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/static/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Oswald:wght@500;700&display=swap">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="lang-<%= lang %>">
+<header class="site-header">
+  <div class="container header-in">
+    <a class="brand" href="/<%= lang %>" aria-label="BFOOT NEWS">
+      <img src="/static/img/logo.png" alt="BFOOT NEWS" width="54" height="54">
+      <span class="brand-text"><span><b>BFOOT</b> NEWS</span><small><%= t('slogan') %></small></span>
+    </a>
+    <div class="hdr-menu">
+      <nav class="main-nav">
+        <a href="/<%= lang %>" class="<%= active === 'home' ? 'on' : '' %>"><%= t('nav_home') %></a>
+        <a href="/<%= lang %>/news" class="<%= active === 'news' ? 'on' : '' %>"><%= t('nav_news') %></a>
+        <a href="/<%= lang %>/polls" class="<%= active === 'polls' ? 'on' : '' %>"><%= t('nav_polls') %></a>
+      </nav>
+      <form class="search" action="/<%= lang %>/news" method="get" role="search">
+        <input type="search" name="q" placeholder="<%= t('search') %>" maxlength="80" aria-label="<%= t('search') %>">
+      </form>
+    </div>
+    <div class="hdr-right">
+      <div class="lang-switch">
+        <a href="<%= altUrl('ar') %>" hreflang="ar" class="<%= lang === 'ar' ? 'on' : '' %>">AR</a>
+        <a href="<%= altUrl('fr') %>" hreflang="fr" class="<%= lang === 'fr' ? 'on' : '' %>">FR</a>
+      </div>
+      <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>

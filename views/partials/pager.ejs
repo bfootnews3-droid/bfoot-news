@@ -1,0 +1,7 @@
+<% if (pages > 1) { %>
+<nav class="pager" aria-label="Pagination">
+  <% for (let i = 1; i <= pages; i++) { %>
+    <a class="<%= i === page ? 'on' : '' %>" href="<%= base + i %>"><%= i %></a>
+  <% } %>
+</nav>
+<% } %>
